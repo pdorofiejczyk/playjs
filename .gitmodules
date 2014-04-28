@@ -1,0 +1,3 @@
+[submodule "riotjs"]
+	path = riotjs
+	url = git://github.com/muut/riotjs.git

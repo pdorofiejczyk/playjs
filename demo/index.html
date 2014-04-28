@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Play.js demo app</title>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    <script src="../jquery.min.js"></script>
+    <script src="../riotjs/riot.js"></script>
+    <script src="../lib/controller.js"></script>
+    <script src="../lib/model.js"></script>
+    <script src="Employees.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        $.observable = riot.observable;
+        $.render = riot.render;
+
+        var employees = new Employees(),
+            $employeeForm = $.model('employeeForm'),
+            $employeeList = $.model('employeeList');
+
+        employees.on('change', function(data) {
+          $employeeList.model.data({elements: data});
+          $employeeForm.model.clear();
+        }).on('filter', function(data) {
+          $employeeList.model.data({elements: data});
+        }).on('error', function(errors) {
+          $employeeForm.model.data({'errors': errors});
+        });
+
+        $.controller('employee', {
+          saveClick: function() {
+            employees.save($employeeForm.model.data());
+          },
+          editClick: function($container, $target, data) {
+            $employeeForm.model.data(employees.get(data.element));
+          },
+          deleteClick: function($container, $target, data) {
+            employees.remove(data.element);
+          },
+          filterKeyup: function($container, $target) {
+            employees.filter($target.val());
+          }
+        });
+      });
+    </script>
+    <script type="html/employee">
+      <div data-element="{id}">
+        <h3>{name} {surname}</h3>
+        <span>Active: {active}</span>
+        <div>
+          <span data-action="employee/edit">edit</span>&nbsp;|&nbsp; 
+          <span data-action="employee/delete">delete</span>
+        </div>
+      </div>
+    </script>
+    <script type="html/error">
+      <div>Wrong field "{name}" value!</div>
+    </script>
+  </head>
+  <body>
+    <h1>Play.js demo</h1>
+    <div class="employee">
+      <div class="form">
+        <div data-name="employeeForm/errors" data-template="error"></div>
+        <input type="text" data-action="employee/filter" placeholder="Filter"><br/>
+        <input type="hidden" data-name="employeeForm/id">
+        <input type="text" data-name="employeeForm/name" placeholder="Name">
+        <input type="text" data-name="employeeForm/surname" placeholder="Surname">
+        <input type="checkbox" data-name="employeeForm/active" name="active">
+        <label for="active">Active</label>
+        <button data-action="employee/save">Save</button>
+      </div>
+      <div class="list" data-name="employeeList/elements" data-template="employee">
+      </div>
+    </div>
+  </body>
+</html>
