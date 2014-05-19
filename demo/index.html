@@ -7,6 +7,7 @@
     <script src="../riotjs/riot.js"></script>
     <script src="../lib/controller.js"></script>
     <script src="../lib/model.js"></script>
+    <script src="../lib/related.js"></script>
     <script src="Employees.js"></script>
     <script type="text/javascript">
       $(function() {
@@ -40,6 +41,8 @@
             employees.filter($target.val());
           }
         });
+
+              console.log($('.list').related(), $('.list').related('xxx'));
       });
     </script>
     <script type="html/employee">
@@ -69,7 +72,7 @@
         <label for="active">Active</label>
         <button data-action="employee/save">Save</button>
       </div>
-      <div class="list" data-name="employeeList/elements" data-template="employee">
+      <div class="list" data-relation=".form" data-relation-xxx=".employee" data-name="employeeList/elements" data-template="employee">
       </div>
     </div>
   </body>
