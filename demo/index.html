@@ -31,11 +31,11 @@
           saveClick: function() {
             employees.save($employeeForm.model.data());
           },
-          editClick: function($container, $target, data) {
-            $employeeForm.model.data(employees.get(data.element));
+          editClick: function($container, $target, data, id) {
+            $employeeForm.model.data(employees.get(id));
           },
-          deleteClick: function($container, $target, data) {
-            employees.remove(data.element);
+          deleteClick: function($container, $target, data, id) {
+            employees.remove(id);
           },
           filterKeyup: function($container, $target) {
             employees.filter($target.val());
@@ -50,8 +50,8 @@
         <h3>{name} {surname}</h3>
         <span>Active: {active}</span>
         <div>
-          <span data-action="employee/edit">edit</span>&nbsp;|&nbsp; 
-          <span data-action="employee/delete">delete</span>
+          <span data-action="employee/edit/{id}">edit</span>&nbsp;|&nbsp; 
+          <span data-action="employee/delete/{id}">delete</span>
         </div>
       </div>
     </script>
